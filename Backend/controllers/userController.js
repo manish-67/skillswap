@@ -101,7 +101,45 @@ const getUserById = asyncHandler(async (req, res) => {
 });
 
 const registerUser = asyncHandler(async (req, res) => {
-  // ...your registration logic...
+  const { name, email, password, location } = req.body;
+
+  if (!name || !email || !password || !location) {
+    res.status(400);
+    throw new Error('Please fill all required fields');
+  }
+
+  // Check if user already exists
+  const userExists = await User.findOne({ email });
+  if (userExists) {
+    res.status(400);
+    throw new Error('User already exists');
+  }
+
+  // Create user
+  const user = await User.create({
+    name,
+    email,
+    password,
+    location,
+    // Optionally add profilePicture, aboutMe, etc.
+  });
+
+  if (user) {
+    res.status(201).json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      profilePicture: user.profilePicture,
+      aboutMe: user.aboutMe,
+      skillsOffered: user.skillsOffered,
+      skillsNeeded: user.skillsNeeded,
+      location: user.location,
+      token: generateToken(user._id),
+    });
+  } else {
+    res.status(400);
+    throw new Error('Invalid user data');
+  }
 });
 
 const authUser = asyncHandler(async (req, res) => {
