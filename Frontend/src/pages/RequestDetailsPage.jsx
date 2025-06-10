@@ -82,7 +82,7 @@ const RequestDetailsPage = () => {
         </div>
         <div style={{ color: '#777', fontSize: '1em', marginBottom: 8 }}>
           <strong>Category:</strong> {request.category}<br />
-          <strong>Skills Needed:</strong> {request.skillsNeeded.join(', ')}
+          <strong>Skills Needed:</strong> {request.skills.join(', ')}
         </div>
         <div style={{ color: '#777', fontSize: '1em', marginBottom: 8 }}>
           <strong>Posted:</strong> {new Date(request.createdAt).toLocaleString()}

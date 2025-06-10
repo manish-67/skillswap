@@ -23,7 +23,11 @@ const OfferDetailsPage = () => {
         setOffer(data);
         setLoading(false);
       } catch (err) {
-        setError('Failed to fetch offer details.');
+        setError(
+          err.response?.data?.message ||
+          err.message ||
+          'Failed to fetch offer details.'
+        );
         setLoading(false);
       }
     };

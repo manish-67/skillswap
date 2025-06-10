@@ -1,7 +1,7 @@
 const asyncHandler = require('express-async-handler');
 const Message = require('../models/Message');
 const Exchange = require('../models/Exchange');
-const User = require('../models/Users'); // Use correct filename
+const User = require('../models/User');
 const Offer = require('../models/Offer');
 const Request = require('../models/Request');
 const { createNotification } = require('./notificationController'); // Import notification helper

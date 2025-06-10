@@ -32,7 +32,7 @@ const CreateRequestPage = () => {
           title,
           description,
           category,
-          skillsNeeded: skillsNeeded.split(',').map(s => s.trim()),
+          skills: skillsNeeded.split(',').map(s => s.trim()), // <-- change to 'skills'
           location,
         },
         {

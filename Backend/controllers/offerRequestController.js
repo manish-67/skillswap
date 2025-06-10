@@ -1,7 +1,7 @@
 const asyncHandler = require('express-async-handler');
 const Offer = require('../models/Offer');
 const Request = require('../models/Request');
-const User = require('../models/Users'); // Use correct filename
+const User = require('../models/User');
 
 const categories = ['Academics', 'Arts & Crafts', 'Home Services', 'Tech & IT', 'Language', 'Health & Wellness', 'Other'];
 
@@ -11,9 +11,10 @@ const categories = ['Academics', 'Arts & Crafts', 'Home Services', 'Tech & IT', 
 // @route   GET /api/offers?keyword=design&category=Tech%20%26%20IT&location=Delhi
 // @access  Public
 const getOffers = asyncHandler(async (req, res) => {
-  const offers = await Offer.find({ status: 'open' })
+  const offers = await Offer.find({ status: 'active' }) // <-- change 'open' to 'active'
     .populate('user', 'name profilePicture location')
-    .sort({ createdAt: -1 });
+    .sort({ createdAt: -1 })
+    .lean();
   res.json(offers);
 });
 
@@ -21,7 +22,11 @@ const getOffers = asyncHandler(async (req, res) => {
 // @route   GET /api/offers/:id
 // @access  Public
 const getOfferById = asyncHandler(async (req, res) => {
-  const offer = await Offer.findById(req.params.id).populate('user', 'name email profilePicture location skillsOffered skillsNeeded aboutMe');
+  if (!req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
+    res.status(400);
+    throw new Error('Invalid offer ID');
+  }
+  const offer = await Offer.findById(req.params.id).populate('user', 'name email profilePicture location');
 
   if (offer) {
     res.json(offer);
@@ -118,7 +123,7 @@ const deleteOffer = asyncHandler(async (req, res) => {
 // @route   GET /api/requests
 // @access  Public
 const getRequests = asyncHandler(async (req, res) => {
-  const requests = await Request.find({ status: 'open' })
+  const requests = await Request.find({ status: 'open' }) // <-- fix here
     .populate('user', 'name profilePicture location')
     .sort({ createdAt: -1 });
   res.json(requests);
@@ -128,7 +133,11 @@ const getRequests = asyncHandler(async (req, res) => {
 // @route   GET /api/requests/:id
 // @access  Public
 const getRequestById = asyncHandler(async (req, res) => {
-  const request = await Request.findById(req.params.id).populate('user', 'name email profilePicture location skillsOffered skillsNeeded aboutMe');
+  if (!req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
+    res.status(400);
+    throw new Error('Invalid request ID');
+  }
+  const request = await Request.findById(req.params.id).populate('user', 'name email profilePicture location');
 
   if (request) {
     res.json(request);

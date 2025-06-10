@@ -27,10 +27,10 @@ const RequestListPage = () => {
     try {
       const queryString = new URLSearchParams(searchParams).toString();
       const { data } = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/requests?${queryString}`);
-      setRequests(data);
+      setRequests(data); // <-- FIX: Save to state
       setLoading(false);
     } catch (err) {
-      setError('Failed to fetch requests. Please try again later.');
+      setError('Failed to fetch requests.');
       setLoading(false);
     }
   };
@@ -213,7 +213,7 @@ const RequestListPage = () => {
               </p>
               <div style={{ fontSize: '0.93em', color: '#777', marginBottom: 10 }}>
                 <strong>Category:</strong> {request.category}<br />
-                <strong>Skills Needed:</strong> {request.skillsNeeded.join(', ')}
+                <strong>Skills Needed:</strong> {request.skills.join(', ')}
               </div>
               <Link
                 to={`/requests/${request._id}`}

@@ -32,7 +32,7 @@ const offerSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    status: { // e.g., 'active', 'paused', 'completed'
+    status: {
       type: String,
       enum: ['active', 'paused', 'completed'],
       default: 'active',

@@ -30,7 +30,11 @@ const OfferListPage = () => {
       setOffers(data);
       setLoading(false);
     } catch (err) {
-      setError('Failed to fetch offers. Please try again later.');
+      setError(
+        err.response?.data?.message ||
+        err.message ||
+        'Failed to fetch offer details.'
+      );
       setLoading(false);
     }
   };
@@ -215,21 +219,7 @@ const OfferListPage = () => {
                 <strong>Category:</strong> {offer.category}<br />
                 <strong>Skills:</strong> {offer.skills.join(', ')}
               </div>
-              <Link
-                to={`/offers/${offer._id}`}
-                style={{
-                  display: 'inline-block',
-                  marginTop: 'auto',
-                  padding: '8px 14px',
-                  backgroundColor: '#6c757d',
-                  color: 'white',
-                  textDecoration: 'none',
-                  borderRadius: '6px',
-                  fontWeight: 500,
-                  fontSize: '1em',
-                  alignSelf: 'flex-start',
-                }}
-              >
+              <Link to={`/offers/${offer._id}`} style={{ display: 'inline-block', marginTop: 'auto', padding: '8px 14px', backgroundColor: '#6c757d', color: 'white', textDecoration: 'none', borderRadius: '6px', fontWeight: 500, fontSize: '1em', alignSelf: 'flex-start' }}>
                 View Details
               </Link>
             </div>
